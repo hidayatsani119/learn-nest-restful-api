@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 
 interface NestErrorResponse {
   message: string | string[];
@@ -15,11 +16,13 @@ interface NestErrorResponse {
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost): void {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-
+    const ctx: HttpArgumentsHost = host.switchToHttp();
+    const response: Response<
+      any,
+      Record<string, any>
+    > = ctx.getResponse<Response>();
     const status: HttpStatus = exception.getStatus();
-    const exceptionResponse = exception.getResponse();
+    const exceptionResponse: string | object = exception.getResponse();
 
     let message: string;
     let errors: string | string[] | null;
