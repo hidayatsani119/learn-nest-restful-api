@@ -12,6 +12,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UserController {
@@ -20,10 +21,10 @@ export class UserController {
   @Post()
   @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() createUserDto: CreateUserDto) {
-    const reponse = await this.userService.create(createUserDto);
+    const response: User = await this.userService.create(createUserDto);
     return {
       message: 'User created successfully',
-      data: reponse,
+      data: response,
     };
   }
 
