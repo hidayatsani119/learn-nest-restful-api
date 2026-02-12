@@ -18,7 +18,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    // Pastikan status dipaksa menjadi tipe Enum HttpStatus
     const status: HttpStatus = exception.getStatus();
     const exceptionResponse = exception.getResponse();
 
