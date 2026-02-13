@@ -3,7 +3,6 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
 import { Logger as TypeOrmLoggerInterface } from 'typeorm';
 import { LoggerService } from '@nestjs/common';
-import { WinstonConfig } from './winston.config';
 
 export class TypeOrmLoggerConfig implements TypeOrmLoggerInterface {
   constructor(private readonly logger: LoggerService) {}
@@ -25,7 +24,10 @@ export class TypeOrmLoggerConfig implements TypeOrmLoggerInterface {
   }
 
   logQuerySlow(time: number, query: string, parameters?: any[]) {
-    this.logger?.warn?.(`Slow Query [${time}ms]: ${query}`, 'TypeORM');
+    this.logger?.warn?.(
+      `Slow Query [${time}ms]: ${query} -- Params: ${JSON.stringify(parameters)}`,
+      'TypeORM',
+    );
   }
 
   logSchemaBuild(message: string) {
