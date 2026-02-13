@@ -12,15 +12,15 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-  async create(createUserDto: CreateUserDto) {
-    const isUserExist = await this.userRepository.count({
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const isUserExist: number = await this.userRepository.count({
       where: [
         { username: createUserDto.username },
         { email: createUserDto.email },
       ],
     });
     if (isUserExist !== 0) {
-      throw new ConflictException('User already exists');
+      throw new ConflictException('username or email already exists');
     }
     const newUser: User = this.userRepository.create(createUserDto);
     newUser.password = await bcrypt.hash(newUser.password, 12);
